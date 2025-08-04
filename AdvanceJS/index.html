@@ -1,0 +1,152 @@
+<html>
+<head>
+<style>
+*
+{
+padding:0;
+margin:0;
+}
+
+#box
+{
+height:720px;
+width:400px;
+box-shadow: 8px 8px 10px #bdc9c2,-8px -8px 10px #bdc9c2 ;
+border-radius:2px; 
+margin:70px auto
+}
+#inputBox
+{
+height:200px;
+width:100%;
+}
+h1
+{
+padding-top:20px;
+}
+#t1
+{
+height:60px;
+width:80%;
+margin-top:30px;
+padding-left:20px;
+font-size:20px;
+font-weight:bold;
+border:4px solid #ba49d6;
+outline:none;
+}
+#inputBox button
+{
+width:150px;
+height:35px;
+font-size:18px;
+margin-top:20px;
+background:#ba49d6;
+color:white;
+border-radius:7px;
+}
+#img
+{
+height:200px;
+width:60%;
+margin-top:-40px;
+}
+#img1
+{
+height:200px;
+width:100%;
+}
+#info h4
+{
+font-size:20px;
+margin:15px;
+font-weight:bold;
+
+}
+#info
+{
+height:400
+width:100%;
+margin-top:20px;
+}
+
+
+
+
+</style>
+
+</head>
+<body>
+<div id="box">
+<center><h1>Weather App</h1><center>
+<div id="inputBox">
+<input type="text" id="t1" placeholder=" Enter City Name"/>
+<button onclick="getInfo()">Get Weather</button>
+
+</div>
+<div id="img">
+<img src="weather.webp" alt="no image" id="img1"/>
+</div>
+<div id="info">
+<h4>Temprature:<span id="data1"></span></h4>
+<h4>Weather Info:<span id="data2"></span></h4>
+<h4>Feels Like:<span id="data3"></span></h4>
+<h4>Humidity:<span id="data4"></span></h4>
+<h4>Location Info:<span id="data5"></span></h4>
+<h4>Recorded At:<span id="data6"></span></h4>
+<h4>Is-Day:<span id="data7"></span></h4>
+</div>
+
+</div>
+
+<script>
+function getInfo()
+{
+var city= t1.value;
+if(city!=" ")
+{
+fetch("http://api.weatherstack.com/current?access_key=fec0aac2b3416663764e6d734ece457f&query="+city)
+.then((response)=>{
+return response.json();
+}).then((data)=>{
+console.log(data);
+data1.innerHTML = data.current.temperature;
+data2.innerHTML = data.current.weather_descriptions[0];
+data3.innerHTML = data.current.feelslike;
+data4.innerHTML = data.current.humidity;
+data5.innerHTML = data.location.name+","+data.location.region+","+data.location.country;
+data6.innerHTML = data.current.observation_time;
+data7.innerHTML = data.current.is_day;
+if(data.current.weather_descriptions[0]=="Mist")
+{
+img1.src="Mist.jpg";
+}
+else if(data.current.weather_descriptions[0]!="Overcast")
+{
+img1.src="sunnyimg.jpg";
+}
+else if(data.current.weather_descriptions[0]!="Partly Cloudy")
+{
+img1.src="PRT.jpg";
+}
+else if(data.current.weather_descriptions[0]!="Patchy rain nearby")
+{
+img1.src="rainyday.jpg";
+}
+else
+{
+img1.src = "weather.webp"
+}
+
+
+})
+}
+else
+{
+alert("Please Enter a city");
+}
+}
+</script>
+</body>
+
+</html>
